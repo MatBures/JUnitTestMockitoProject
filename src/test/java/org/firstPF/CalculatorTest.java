@@ -57,7 +57,7 @@ public class CalculatorTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/integerDivision.csv")
+    @CsvFileSource(resources = "/integerSubtraction.csv")
     public void testIntegerSubtraction(int minuend, int subtrahend, int expectedResult) {
 
         System.out.println("Running Test " + minuend +" - " + subtrahend + " = "+ expectedResult);
