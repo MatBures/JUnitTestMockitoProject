@@ -1,5 +1,13 @@
-import org.firstPF.Calculator;
-import org.junit.jupiter.api.*;
+package org.firstPF;
+
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.io.ByteArrayInputStream;
 
@@ -17,7 +25,7 @@ public class CalculatorTest {
     }
 
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         calculator = new Calculator();
     }
 
@@ -32,6 +40,7 @@ public class CalculatorTest {
 
         Assertions.assertEquals(expectedResult,result);
     }
+
     @Test
     public void testIntegerDivision_WhenZeroIsDividedByTwo_ShouldThrowArithmeticException() {
 
@@ -47,28 +56,30 @@ public class CalculatorTest {
         Assertions.assertEquals(expectedExceptionMessage, actualException.getMessage());
     }
 
-    @Test
-    public void testIntegerSubtraction() {
-        Calculator calculator = new Calculator();
+    @ParameterizedTest
+    @CsvFileSource(resources = "/integerDivision.csv")
+    public void testIntegerSubtraction(int minuend, int subtrahend, int expectedResult) {
 
-        int result = calculator.integerSubtraction(10,5);
+        System.out.println("Running Test " + minuend +" - " + subtrahend + " = "+ expectedResult);
 
-        Assertions.assertEquals(5,result);
+        int actualResult = calculator.integerSubtraction(minuend,subtrahend);
+
+        Assertions.assertEquals(expectedResult,actualResult);
     }
 
     @Test
     public void testEnterNumber() {
-        // Testovací vstup
+
         String input = "42\n";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-        // Vytvoření instance třídy YourClass
+
         Calculator calculator1 = new Calculator();
 
-        // Volání metody enterNumber()
+
         int result = calculator1.enterNumber();
 
-        // Otestování výsledku
+
         Assertions.assertEquals(42, result);
     }
 
