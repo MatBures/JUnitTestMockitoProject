@@ -1,6 +1,7 @@
-package org.firstPF;
+package org.firstPF.calculator;
 
 
+import org.firstPF.calculator.Calculator;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

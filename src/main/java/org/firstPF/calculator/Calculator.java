@@ -1,4 +1,4 @@
-package org.firstPF;
+package org.firstPF.calculator;
 
 import java.util.Scanner;
 
