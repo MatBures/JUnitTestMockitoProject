@@ -10,6 +10,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
@@ -26,7 +30,7 @@ public class UserServiceTest {
     private String repeatPassword;
 
     @BeforeEach
-    void initialize(){
+    void initialize() {
 
         firstName = "Matyáš";
         lastName = "Bureš";
@@ -40,7 +44,7 @@ public class UserServiceTest {
     void testCreateUser_whenUserDetailsProvided_returnsUserObject() {
 
         // Arrange
-        Mockito.when(usersRepository.save(Mockito.any(User.class))).thenReturn(true);
+        when(usersRepository.save(any(User.class))).thenReturn(true);
 
         //Act
         User user = userService.createUser(firstName, lastName, email, password, repeatPassword);
@@ -48,9 +52,9 @@ public class UserServiceTest {
         //Assert
         Assertions.assertNotNull(user, "The createUser() should not returned null");
         Assertions.assertEquals(firstName, user.getFirstName(), "The first name is incorrect");
-        Assertions.assertEquals(email, user.getEmail(),"The email is incorrect");
+        Assertions.assertEquals(email, user.getEmail(), "The email is incorrect");
         Assertions.assertNotNull(user.getId(), "The id is not null");
-        Mockito.verify(usersRepository, Mockito.times(1)).save(Mockito.any(User.class));
+        Mockito.verify(usersRepository, times(1)).save(any(User.class));
     }
 
     @DisplayName("Empty first name causes correct exception")
@@ -62,12 +66,27 @@ public class UserServiceTest {
         String expectedMessage = "User first name is empty";
 
         // Assert
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, ()->{
-            userService.createUser(firstName,lastName,email,password,repeatPassword);
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            userService.createUser(firstName, lastName, email, password, repeatPassword);
         }, "Empty first name should have caused an Illegal Argument Exception");
 
         Assertions.assertEquals(expectedMessage, thrown.getMessage(), "Exception error message is not correct");
 
+    }
+
+    @DisplayName("Empty first name causes correct exception")
+    @Test
+    void testCreateUser_whenSaveMethodThrowsException_thenThrowsUserServiceException(){
+
+        // Arrange
+        when(usersRepository.save(any(User.class))).thenThrow(RuntimeException.class);
+
+        // Act & Assert
+        Assertions.assertThrows(UserServiceException.class, () -> {
+            userService.createUser(firstName, lastName, email, password, repeatPassword);
+        }, "Should have thrown UserServiceException instead");
 
     }
 }
+
+
