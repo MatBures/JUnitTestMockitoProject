@@ -1,4 +1,4 @@
-package org.firstPF.userServices;
+package org.firstPF.userService;
 
 import org.firstPF.userModel.User;
 
